@@ -4,6 +4,7 @@
 from flask import Flask, url_for, render_template, redirect, request
 import random
 import string
+import psycopg2
 
 app = Flask(__name__)
 
