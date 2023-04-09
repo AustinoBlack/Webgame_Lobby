@@ -6,7 +6,9 @@
     <body>
         <h2>create a lobby!</h2>
 
-        <form action="{{url_for('Create_Lobby')}}" method=post>
+        <form action="{{url_for('Handle_Insertion')}}" method=post>
+            <label for="hostname">Hostname:</label><br>
+            <input type="text"  name="hostname"><br>     
             <input type=submit value="Create" name=insert />
             <input type=submit value=Leave name=return />
         </form>

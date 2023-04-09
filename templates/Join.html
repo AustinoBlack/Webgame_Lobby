@@ -5,5 +5,13 @@
     </head>
     <body>
         <h2>Join a Lobby!</h2>
+            <form action="{{url_for('Handle_Insertion')}}" method=post>
+                <label for="username">Username:</label><br>
+                <input type="text" name="username"><br>
+                <label for="roomcode">Roomcode:</label><br>
+                <input type="text" name="roomcode"><br>
+                <input type=submit value="Join" name=insert />
+                <input type=submit value=Leave name=return />
+            </form>
     </body>
 </html>
