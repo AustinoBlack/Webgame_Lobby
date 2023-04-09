@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Lobby: {{code}}</title>
+        <title id=title>{{code}}</title>
+        <script src="{{url_for('static', filename='players.js')}}"></script>
     </head>
-    <body>
+    <body onload="">
         <h1>Welcome to lobby: {{code}}!</h1>
+        <hr>
+        <h3>Players:</h3>
+        <div id=players>
+            
+        </div>
     </body>
 </html>

@@ -15,19 +15,21 @@ def Create_Lobby( hostname, roomcode ):
             cur.execute("SELECT * FROM player WHERE username = %s", (hostname, ) )
             if cur.fetchone() is not None:
                 print("username taken")
-                return redirect( url_for('Create_Page') )
+                return False
             # check for duplicate roomcodes
             cur.execute("SELECT roomcode FROM lobby WHERE roomcode = %s", (roomcode, ) )
             if cur.fetchone() is not None:
                 print("lobbycode already generated... uh oh. I promise this doesn't happen very often")
-                return redirect( url_for('Create_Page') )
+                return False
             # coast is clear, do the thing(s)
             else:
                 cur.execute("INSERT INTO player (username) VALUES (%s)", (hostname, ) )
                 cur.execute("INSERT INTO lobby (roomcode) VALUES (%s)", (roomcode, ) )
                 cur.execute("INSERT INTO hosts (username, roomcode) VALUES (%s, %s)", (hostname, roomcode) )
                 conn.commit()
+                return True
     conn.close()
+    return False
 
 
 def Join_Lobby( username, roomcode ):
@@ -37,15 +39,28 @@ def Join_Lobby( username, roomcode ):
             cur.execute("SELECT * FROM player WHERE username = %s", (username, ) )
             if cur.fetchone() is not None:
                 print("username taken")
-                return redirect( url_for('Join_Page') )
+                return False
             # check if the given roomcode exists            
             cur.execute("SELECT roomcode FROM lobby WHERE roomcode = %s", (roomcode, ) )
             if cur.fetchone() is None:
                 print("lobby doesn't exist!")
-                return redirect( url_for('Join_Page') )
+                return False
             # coast is clear, do the thing(s)
             else:
                 cur.execute("INSERT INTO player (username) VALUES (%s)", (username, ) )
                 cur.execute("INSERT INTO joins (username, roomcode) VALUES (%s, %s)", (username, roomcode) )
                 conn.commit()
+                return True
     conn.close()
+    return False
+
+
+def Get_Players( roomcode ):
+    with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
+        with conn.cursor() as cur:
+            cur.execute('''SELECT username FROM hosts WHERE roomcode = %s 
+                           UNION 
+                           SELECT username FROM joins WHERE roomcode = %s''', (roomcode, roomcode) )
+            List = [r[0] for r in cur.fetchall()]
+    conn.close()
+    return List
