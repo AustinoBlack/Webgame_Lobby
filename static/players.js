@@ -1,6 +1,6 @@
 function sendRoomCode()
 {
-    var room_code = document.getElementById('title').value
+    var room_code = document.getElementById('title').firstChild.value
     alert( room_code )
     console.log(room_code)
     const request = new XMLHttpRequest()
