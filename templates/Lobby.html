@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title id=title>{{code}}</title>
+        <title id='title'>{{code}}</title>
         <script src="{{url_for('static', filename='players.js')}}"></script>
     </head>
-    <body onload="">
+    <body onload=sendRoomCode()>
         <h1>Welcome to lobby: {{code}}!</h1>
         <hr>
         <h3>Players:</h3>
-        <div id=players>
-            
-        </div>
+        <div id=players></div>
     </body>
 </html>
