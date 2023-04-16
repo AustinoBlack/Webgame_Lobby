@@ -1,6 +1,10 @@
 function sendRoomCode()
 {
+<<<<<<< HEAD
     var room_code = document.getElementById('roomcode').value
+=======
+    var room_code = document.getElementById('title').firstChild.value
+>>>>>>> bd492c7a63aedb60e959de3d846967c1ec526359
     alert( room_code )
     console.log(room_code)
     const request = new XMLHttpRequest()
