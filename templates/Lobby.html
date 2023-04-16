@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title id='title'>{{code}}</title>
+        <title>{{code}}</title>
         <script src="{{url_for('static', filename='players.js')}}"></script>
     </head>
     <body onload=sendRoomCode()>
+        <input type='hidden' id='roomcode' value={{code}} />
         <h1>Welcome to lobby: {{code}}!</h1>
         <hr>
         <h3>Players:</h3>
-        <div id=players></div>
+        <div id=column>
+            <table>
+                <tr><th><h2>Players</h2><th><tr>
+            </table>
+            <table id='players'>
+                <!-- Players will appear/disappear here as join/leave -->
+            </table>
+        </div>
     </body>
 </html>

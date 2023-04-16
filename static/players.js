@@ -1,6 +1,6 @@
 function sendRoomCode()
 {
-    var room_code = document.getElementById('title').value
+    var room_code = document.getElementById('roomcode').value
     alert( room_code )
     console.log(room_code)
     const request = new XMLHttpRequest()
@@ -16,7 +16,12 @@ function update_list()
         response => response.json()
     ).then(
         data => {
-            document.getElementById('players').innerHTML=data;
+            document.getElementById('players').innerHTML="";
+            for( player of data )
+            {
+                console.log( player );
+                document.getElementById('players').innerHTML+="<tr><td>"+ player +"</td></tr>";
+            }
         }
     );
 }
