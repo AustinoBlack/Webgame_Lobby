@@ -22,7 +22,7 @@ def Join_Page():
 
 
 @app.route("/", methods=['POST'])                                           #triggered by form on either create or join page
-def Handle_Insertion():
+def Handle_Clicks():
     if request.method == 'POST':
         if request.form.get('return') == 'Leave':                           #if leave button is clicked
             return render_template("Landing.html")                          #go to Landing page
