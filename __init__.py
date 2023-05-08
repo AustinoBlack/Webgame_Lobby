@@ -48,7 +48,7 @@ def Handle_Clicks():
             elif Join_Lobby( uname, rmcode ) == "username":                     #refresh page with username taken msg
                 return redirect( url_for('Join_Page', flash_msg="username"))
             elif Join_Lobby( uname, rmcode ) == "room":                         #refresh page with room does not exist msg
-                return redirect( url_for('Join_Page', flash_msg="roomcode")
+                return redirect( url_for('Join_Page', flash_msg="room"))
             elif Join_Lobby( uname, rmcode ) == "full":                         #refresh page with room is full msg
                 return redirect( url_for('Join_Page', flash_msg="full"))
             else:
