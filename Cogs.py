@@ -15,12 +15,12 @@ def Create_Lobby( hostname, roomcode, roomsize ):
             cur.execute("SELECT * FROM player WHERE username = %s", (hostname, ) )
             if cur.fetchone() is not None:
                 print("username taken")
-                return False
+                return "username"
             # check for duplicate roomcodes
             cur.execute("SELECT roomcode FROM lobby WHERE roomcode = %s", (roomcode, ) )
             if cur.fetchone() is not None:
                 print("lobbycode already generated... uh oh. I promise this doesn't happen very often")
-                return False
+                return "roomcode"
             # coast is clear, do the thing(s)
             else:
                 cur.execute("INSERT INTO player (username) VALUES (%s)", (hostname, ) )
@@ -39,12 +39,12 @@ def Join_Lobby( username, roomcode ):
             cur.execute("SELECT * FROM player WHERE username = %s", (username, ) )
             if cur.fetchone() is not None:
                 print("username taken")
-                return False
+                return "username"
             # check if the given roomcode exists            
             cur.execute("SELECT roomcode FROM lobby WHERE roomcode = %s", (roomcode, ) )
             if cur.fetchone() is None:
                 print("lobby doesn't exist!")
-                return False
+                return "roomcode"
             # check if the lobby is full
             cur.execute("SELECT roomsize FROM lobby WHERE roomcode = %s", (roomcode, ) )
             size = cur.fetchone()[0]
@@ -52,7 +52,7 @@ def Join_Lobby( username, roomcode ):
             occupency = cur.fetchone()[0]
             if occupency >= size: #check if lobby is full
                 print("Lobby " + roomcode + " is full")
-                return False
+                return "full"
             # coast is clear, do the thing(s)
             else:
                 cur.execute("INSERT INTO player (username) VALUES (%s)", (username, ) )
