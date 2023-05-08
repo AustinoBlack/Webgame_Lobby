@@ -44,7 +44,7 @@ def Join_Lobby( username, roomcode ):
             cur.execute("SELECT roomcode FROM lobby WHERE roomcode = %s", (roomcode, ) )
             if cur.fetchone() is None:
                 print("lobby doesn't exist!")
-                return "roomcode"
+                return "room"
             # check if the lobby is full
             cur.execute("SELECT roomsize FROM lobby WHERE roomcode = %s", (roomcode, ) )
             size = cur.fetchone()[0]
