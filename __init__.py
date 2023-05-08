@@ -1,6 +1,6 @@
 # Main app
 # @Austin Black
-from flask import Flask, url_for, render_template, redirect, request
+from flask import Flask, url_for, render_template, redirect, request, jsonify
 from Cogs import Generate_Code, Create_Lobby, Join_Lobby, Get_Players
 import json
 
@@ -51,11 +51,9 @@ def Lobby_Page(room_code):
     return render_template("Lobby.html", code=room_code)
 
 
-@app.route("/update_list/<string:room_code>", methods=['POST'])
+@app.route("/update_list/<string:room_code>", methods=['GET','POST'])
 def update_list(room_code):
-    room_code = json.loads(room_code)
     rmcode = room_code
-    print( rmcode )
     plist = Get_Players( rmcode )
     return jsonify( plist )
 

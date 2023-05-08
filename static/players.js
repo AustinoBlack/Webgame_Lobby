@@ -1,7 +1,6 @@
 function sendRoomCode()
 {
     var room_code = document.getElementById('roomcode').value
-    var room_code = document.getElementById('title').firstChild.value
     //alert( room_code ) //DEBUG
     console.log(room_code)
     const request = new XMLHttpRequest()
@@ -11,7 +10,7 @@ function sendRoomCode()
 
 function update_list()
 {
-    let roomcode = document.getElementById('title').value
+    let roomcode = document.getElementById('roomcode').value
     let player_div = document.querySelector('#players');
     fetch(`/update_list/${roomcode}`).then(
         response => response.json()
