@@ -8,7 +8,7 @@ def Generate_Code():
     return ''.join( random.choice( string.ascii_uppercase + string.digits ) for i in range(4) )
 
 
-def Create_Lobby( hostname, roomcode ):
+def Create_Lobby( hostname, roomcode, roomsize ):
     with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
         with conn.cursor() as cur:
             # check for duplicate usernames
@@ -24,7 +24,7 @@ def Create_Lobby( hostname, roomcode ):
             # coast is clear, do the thing(s)
             else:
                 cur.execute("INSERT INTO player (username) VALUES (%s)", (hostname, ) )
-                cur.execute("INSERT INTO lobby (roomcode) VALUES (%s)", (roomcode, ) )
+                cur.execute("INSERT INTO lobby (roomcode, roomsize) VALUES (%s, %s)", (roomcode, roomsize) )
                 cur.execute("INSERT INTO hosts (username, roomcode) VALUES (%s, %s)", (hostname, roomcode) )
                 conn.commit()
                 return True
@@ -44,6 +44,14 @@ def Join_Lobby( username, roomcode ):
             cur.execute("SELECT roomcode FROM lobby WHERE roomcode = %s", (roomcode, ) )
             if cur.fetchone() is None:
                 print("lobby doesn't exist!")
+                return False
+            # check if the lobby is full
+            cur.execute("SELECT roomsize FROM lobby WHERE roomcode = %s", (roomcode, ) )
+            size = cur.fetchone()[0]
+            cur.execute("SELECT count(*) FROM ( SELECT username FROM hosts WHERE roomcode = %s UNION SELECT username FROM joins WHERE roomcode = %s ) as count", (roomcode, roomcode ) )
+            occupency = cur.fetchone()[0]
+            if occupency >= size: #check if lobby is full
+                print("Lobby " + roomcode + " is full")
                 return False
             # coast is clear, do the thing(s)
             else:

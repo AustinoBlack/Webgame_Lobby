@@ -30,7 +30,8 @@ def Handle_Clicks():
         elif request.form.get('insert') == 'Create':                        #if create button is clicked on create page
             rmcode = Generate_Code()                                        #see Cogs
             hname = request.form['hostname']                                #get hostname from form
-            if Create_Lobby( hname, rmcode ):                               #see Cogs
+            rmsize = request.form['roomsize']                               #get roomsize from form
+            if Create_Lobby( hname, rmcode, rmsize ):                       #see Cogs
                 return redirect( url_for('Lobby_Page', room_code=rmcode))   #go to correct lobby
             else:
                 return redirect( url_for('Create_Page') )
