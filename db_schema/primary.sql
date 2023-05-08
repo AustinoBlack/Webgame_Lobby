@@ -4,7 +4,8 @@ DROP TABLE IF EXISTS lobby;
 DROP TABLE IF EXISTS player;
 
 CREATE TABLE lobby (
-    roomcode VARCHAR(4) PRIMARY KEY
+    roomcode VARCHAR(4) PRIMARY KEY,
+    roomsize INTEGER
 );
 
 CREATE TABLE player (

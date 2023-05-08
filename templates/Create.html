@@ -8,7 +8,10 @@
 
         <form action="{{url_for('Handle_Clicks')}}" method=post>
             <label for="hostname">Hostname:</label><br>
-            <input type="text"  name="hostname"><br>     
+            <input type="text" name="hostname"><br> 
+            <label for="roomsize">roomsize:</label><br>
+            <input type="number" name="roomsize" min='2' max='10' required><br> 
+            
             <input type=submit value="Create" name=insert />
             <input type=submit value=Leave name=return />
         </form>
