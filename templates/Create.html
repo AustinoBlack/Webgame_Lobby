@@ -2,10 +2,12 @@
 <html>
     <head>
         <title>Create A Lobby</title>
+        <script src="{{url_for('static', filename='flash_msg.js')}}"></script>
     </head>
-    <body>
+    <body onload="flash_msg()">
+        <input type='hidden' id='flash_msg' name='flash_msg' value='{{flash_msg}}' /> 
         <h2>create a lobby!</h2>
-
+        
         <form action="{{url_for('Handle_Clicks')}}" method=post>
             <label for="hostname">Hostname:</label><br>
             <input type="text" name="hostname"><br> 

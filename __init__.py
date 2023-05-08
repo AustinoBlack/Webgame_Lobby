@@ -31,28 +31,28 @@ def Handle_Clicks():
             rmcode = Generate_Code()                                            #see Cogs
             hname = request.form['hostname']                                    #get hostname from form
             rmsize = request.form['roomsize']                                   #get roomsize from form
-            if Create_Lobby( hname, rmcode, rmsize ):                           #see Cogs
+            if Create_Lobby( hname, rmcode, rmsize ) == True:                   #see Cogs
                 return redirect( url_for('Lobby_Page', room_code=rmcode))       #go to correct lobby
             elif Create_Lobby( hname, rmcode, rmsize ) == "username":           #refresh page with username taken msg
-                return redirect( url_for('Create_Page', flash_msg="username"))
+                return render_template('Create.html', flash_msg="username")
             elif Create_Lobby( hname, rmcode, rmsize ) == "roomcode":           #refresh page with roomcode already generated msg
-                return redirect( url_for('Create_Page', flash_msg="roomcode"))
+                return render_template('Create.html', flash_msg="roomcode")
             else:
-                return redirect( url_for('Create_Page', flash_msg="error"))     #refresh page with backup\undefined msg
+                return render_template('Create.html', flash_msg="error")        #refresh page with backup\undefined msg
 
         elif request.form.get('insert') == 'Join':                              #if join button is clicked on join page
             rmcode = request.form['roomcode']                                   #get roomcode from form
             uname = request.form['username']                                    #get username from form
-            if Join_Lobby( uname, rmcode ):                                     #see Cogs
+            if Join_Lobby( uname, rmcode ) == True:                             #see Cogs
                 return redirect( url_for('Lobby_Page', room_code=rmcode))       #go to correct lobby
             elif Join_Lobby( uname, rmcode ) == "username":                     #refresh page with username taken msg
-                return redirect( url_for('Join_Page', flash_msg="username"))
+                return render_template('Join.html', flash_msg="username") 
             elif Join_Lobby( uname, rmcode ) == "room":                         #refresh page with room does not exist msg
-                return redirect( url_for('Join_Page', flash_msg="room"))
+                return render_template('Join.html', flash_msg="room") 
             elif Join_Lobby( uname, rmcode ) == "full":                         #refresh page with room is full msg
-                return redirect( url_for('Join_Page', flash_msg="full"))
+                return render_template('Join.html', flash_msg="full") 
             else:
-                return redirect( url_for('Join_Page', flash_msg="error"))       #refresh page with backup\undefined msg
+                return render_template('Join.html', flash_msg="error")          #refresh page with backup\undefined msg
     else:
         return render_template("Landing.html")                                  #if something goes horribly wrong, go back to Landing
 
