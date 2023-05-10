@@ -75,24 +75,23 @@ def Get_Players( roomcode ):
 
 
 def Leave_Lobby(username):
-	with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
-		with conn.cursor() as cur:
-            print( "Player: " + username + " left" )
-			cur.execute("DELETE FROM player WHERE username = %s", (username,)	)
-			cur.execute("DELETE FROM joins WHERE username = %s", (username,)	)
-			conn.commit()
-	conn.close()
-	return True
+    with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM player WHERE username = %s", (username,)	)
+            cur.execute("DELETE FROM joins WHERE username = %s", (username,)	)
+            conn.commit()
+    conn.close()
+    print( username + " left" )
+    return True
 
 
 def End_Game(roomcode):
-	with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
-		with conn.cursor() as cur:
-            print( "deleting Lobby: " + roomcode )
-			cur.execute("DELETE FROM player USING joins WHERE joins.username = player.username AND joins.roomcode = %s", (roomcode,)	)
-			cur.execute("DELETE FROM player USING hosts WHERE hosts.username = player.username AND hosts.roomcode = %s", (roomcode,)	)
-			cur.execute("DELETE FROM lobby WHERE roomcode = %s", (roomcode,)	)
-			conn.commit()
-	conn.close()
-	return True
-
+    with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM player USING joins WHERE joins.username = player.username AND joins.roomcode = %s", (roomcode,)	)
+            cur.execute("DELETE FROM player USING hosts WHERE hosts.username = player.username AND hosts.roomcode = %s", (roomcode,)	)
+            cur.execute("DELETE FROM lobby WHERE roomcode = %s", (roomcode,)	)
+            conn.commit()
+    conn.close()
+    print( "Lobby: " + roomcode + " deleted" )
+    return True
