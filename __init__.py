@@ -8,21 +8,30 @@ app = Flask(__name__)
 
 @app.route("/")
 def Landing_Page():
+    '''renders the Landing.html template'''
     return render_template("Landing.html")
 
 
 @app.route("/create_lobby")
 def Create_Page():
+    '''renders the Create.hmtl template'''
     return render_template("Create.html")
 
 
 @app.route("/join_lobby")
 def Join_Page():
+    '''renders the Join.html template'''
     return render_template("Join.html")
 
 
 @app.route("/", methods=['POST'])                                               #triggered by form on either create or join page
 def Handle_Clicks():
+    '''handles various button clicks throughout the website
+       Leave -> returns the user to the landing page
+       End Game -> calls End_Game() and returns the user to the landing page
+       Leave Game -> calls Leave_Game() and returns the user to the landing page
+       Create -> calls Generate_Code and Create_Lobby(), on success, redirects user to a newly created Lobby
+       Join -> redirects user to the appropiate Lobby on success'''
     if request.method == 'POST':
         if request.form.get('return') == 'Leave':                               #if leave button is clicked
             return render_template("Landing.html")                              #go to Landing page
@@ -69,11 +78,13 @@ def Handle_Clicks():
 
 @app.route("/Lobby/<room_code>/<playername>")
 def Lobby_Page(room_code, playername):
+    '''renders the Lobby.html template'''
     return render_template("Lobby.html", code=room_code, name=playername)
 
 
 @app.route("/update_list/<room_code>", methods=['GET','POST'])
 def update_list(room_code):
+    '''checks and updates a list of players for a given roomcode'''
     rmcode = room_code
     plist = Get_Players( rmcode )
     return jsonify( plist )
