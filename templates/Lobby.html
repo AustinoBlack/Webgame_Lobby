@@ -17,5 +17,13 @@
                 <!-- Players will appear/disappear here as join/leave -->
             </table>
         </div>
+        <form action="{{url_for('Handle_Clicks')}}", method='post'>
+            <input type='hidden' id='roomcode' name='roomcode' value='{{code}}'>
+            <input type='submit' value='End Game' name='end'>
+        </form>
+        <form action="{{url_for('Handle_Clicks')}}", method='post'>
+            <input type='hidden' id='playername' name='playername' value='{{pname}}'>
+            <input type='submit' value='Leave Game' name='leave'>
+        </form>
     </body>
 </html>
