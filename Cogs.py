@@ -5,10 +5,17 @@ import psycopg2
 from flask import redirect, url_for
 
 def Generate_Code():
+    '''Generates and returns a four character roomcode that contains any combination of the characters A-Z and 0-9'''
     return ''.join( random.choice( string.ascii_uppercase + string.digits ) for i in range(4) )
 
 
 def Create_Lobby( hostname, roomcode, roomsize ):
+    '''Inserts the given data values (roomcode, roomsize) as a row into the lobby table
+	   Inserts the given data values (hostname, roomcode) as a row into the hosts table
+	   Inserts the given data values (hostname) as a row into the player table
+				    
+	   Both the roomcode and hostname are checked for duplicate values before insertion.
+	   In the case that a duplicate value is found, the function returns a string appropiate to the error, that the webpage uses to trigger a flash message'''
     with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
         with conn.cursor() as cur:
             # check for duplicate usernames
@@ -33,6 +40,13 @@ def Create_Lobby( hostname, roomcode, roomsize ):
 
 
 def Join_Lobby( username, roomcode ):
+    '''inserts the given data values (username, roomcode) into the joins table
+	   inserts the given data values (hostname) into the player table
+			   
+	   before any insertion the function checks for duplicate usernames, if the roomcode 
+	   exists (ie. it exists in the lobby table), and if the lobby is full
+	   in the case any of these are true, the function returns a string appropiate 
+       to the error, that the webpage uses to trigger a flash message'''
     with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
         with conn.cursor() as cur:
             # check for duplicate usernames
@@ -64,6 +78,7 @@ def Join_Lobby( username, roomcode ):
 
 
 def Get_Players( roomcode ):
+    '''retrieves and returns a list of all players associated with a given roomcode'''
     with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
         with conn.cursor() as cur:
             cur.execute('''SELECT username FROM hosts WHERE roomcode = %s 
@@ -75,6 +90,7 @@ def Get_Players( roomcode ):
 
 
 def Leave_Lobby(username):
+    '''removes the row associated with a given username from the player and joins table'''
     with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
         with conn.cursor() as cur:
             cur.execute("DELETE FROM player WHERE username = %s", (username,)	)
@@ -86,6 +102,7 @@ def Leave_Lobby(username):
 
 
 def End_Game(roomcode):
+    '''deletes all rows in the player, lobby, joins, and hosts table associated with a given roomcode'''
     with psycopg2.connect( database="webgame", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
         with conn.cursor() as cur:
             cur.execute("DELETE FROM player USING joins WHERE joins.username = player.username AND joins.roomcode = %s", (roomcode,)	)
